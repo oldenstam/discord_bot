@@ -6,23 +6,17 @@ const client = new Discord.Client();
 client.login(config.BOT_TOKEN)
 
 
-client.on('voiceStateUpdate', (oldMember, newMember) => {
-    let newUserChannel = newMember.voiceChannel
-    let oldUserChannel = oldMember.voiceChannel
-    console.log("Connected");
-  
-  
-    if(oldUserChannel === "791047918483537923" && newUserChannel !== "791047918483537922") {
-  
-       console.log("Someone joined voice channel");
-  
-    } else if(newUserChannel === "791047918483537922"){
-  
-      console.log("Someone left the voice channel");
-  
-    }
-  })
 
-  //console.log("joined voice channel");
-  //var channel = client.channels.cache.get('791047918483537923')
-  //channel.sendMessage(newMember.displayName + ' joined the voice channel, come and hang out! :smiley:');
+client.on("voiceStateUpdate", (oldVoiceState, newVoiceState) => { // Listeing to the voiceStateUpdate event
+  if (newVoiceState.channel) { // The member connected to a channel.
+
+      console.log(`${newVoiceState.member.user.tag} connected to ${newVoiceState.channel.name}.`);
+      client.channels.cache.get('791047918483537923').send(newVoiceState.member.user.tag + ' joined the voice channel, come and hang out! :smiley:' + ' (PS that person is sexy af!)');
+
+
+  } else if (oldVoiceState.channel) { // The member disconnected from a channel.
+
+      console.log(`${oldVoiceState.member.user.tag} disconnected from ${oldVoiceState.channel.name}.`)
+
+  };
+});
